@@ -8,14 +8,14 @@ import requests
 url = 'https://tools.google.com/service/update2'
 
 # Create XML request message for Google Omaha
-# https://github.com/google/omaha/blob/master/doc/ServerProtocolV3.md
+# https://chromium.googlesource.com/chromium/src.git/+/master/docs/updater/protocol_3_1.md
 data = """<?xml version="1.0" encoding="UTF-8"?>
-<request protocol="3.0" updater="Omaha" updaterversion="1.3.36.112" shell_version="1.3.36.111"
-	installsource="update3web-ondemand" dedup="cr" ismachine="0" domainjoined="0">
-	<os platform="win" version="10.0.22000.282" arch="x64"/>
-	<app appid="{8A69D345-D564-463C-AFF1-A69D9E530F96}" ap="x64-stable-multi-chrome" lang="en-us">
-		<updatecheck />
-	</app>
+<request protocol="3.1" updater="Omaha" updaterversion="1.3.36.112" shell_version="1.3.36.111"
+    installsource="update3web-ondemand" dedup="cr" ismachine="0" domainjoined="0">
+    <os platform="win" version="10.0.27749.1000" arch="x64"/>
+    <app appid="{8A69D345-D564-463C-AFF1-A69D9E530F96}" ap="x64-dev-multi-chrome" lang="en-us">
+        <updatecheck />
+    </app>
 </request>"""
 
 response = requests.post(url, data=data)
@@ -38,7 +38,7 @@ os.system('chmod +x ./7zzs')
 os.system('./7zzs x chrome.7z.exe')
 os.system('./7zzs x chrome.7z')
 
-# 获得Chrime-bin,version.dll,组装到一块就可以分发了
+# 获得Chrome-bin,version.dll,组装到一块就可以分发了
 version = '0.0.0.0'
 path = 'Chrome-bin'
 for i in os.listdir(path):
