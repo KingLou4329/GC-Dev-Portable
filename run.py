@@ -25,7 +25,7 @@ dom = xml.dom.minidom.parseString(response.text)
 print(dom.toprettyxml(indent='  '))
 
 url = dom.getElementsByTagName("url")[0].getAttribute("codebase")
-name = dom.getElementsByTagName("action")[0].getAttribute("run")
+name = dom.getElementsByTagName("package")[0].getAttribute("name")
 
 print(url, name)
 
