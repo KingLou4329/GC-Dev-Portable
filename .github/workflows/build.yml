@@ -2,10 +2,6 @@ name: build
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   schedule:
     - cron: "0 12 * * 3"
 
@@ -14,14 +10,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4.7.1
-        with:
-          python-version: '3.12'
-      - run: ls
-      - name: prepare env
+      - name: get
         run: |
-          python3 -m pip install requests
-          python3 run.py
+          curl -X POST "https://tools.google.com/service/update2" -H "Content-Type: text/xml;charset=UTF-8" -d @request.xml -o response.xml
+          codebase=`cat response.xml|sed 's/^.*codebase="//g'|sed 's/"\/>.*$//g'`
+          name=`awk '/ name=/ {match($0, / name="([^"]*)"/, a); print a[1]; exit}' response.xml`
+          curl -JL "$codebase$name" -H "User-Agent: Chrome/132.0.6847.2" -o chrome.7z.exe
+      - name: repackage
+        run: |
+          # 创建目标目录
+          mkdir -p build/release/
+
+          # 解压
+          7z x chrome.7z.exe || exit 1
+          7z x chrome.7z || exit 1
+
+          # 获取第一个子目录的名称作为版本号
+          version=$(ls Chrome-bin|head -n 1)
+
+          # 检查版本号是否为初始值
+          if [ $version ]; then echo "Version: $version" else exit 1; fi
+
+          # 组装 重命名
+          mv version.dll Chrome-bin/ || exit 1
+          mv chrome++.ini Chrome-bin/ || exit 1
+          mv Chrome-bin build/release/Chrome || exit 1
+
+          # 设置BUILD_NAME环境变量
+          echo "BUILD_NAME=Win64_${version}_$(date +%Y-%m-%d)" >> $GITHUB_ENV
       - name: upload
         uses: actions/upload-artifact@v3
         with:
