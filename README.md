@@ -2,9 +2,9 @@
 
 [![LICENSE](https://img.shields.io/badge/License-GPL--3.0--only-blue.svg?style=for-the-badge&logo=github "LICENSE")](https://github.com/KingLou4329/GC-Dev-Portable/blob/main/LICENSE)
 
-使用了新版 [Bush2021/chrome_plus](https://github.com/Bush2021/chrome_plus), 因此遵循 GPL-3.0 许可证
+使用了新[Bush2021/chrome_plus](https://github.com/Bush2021/chrome_plus)补丁, 由此遵循 GPL-3.0 许可证
 
-自用Dev版
+~~自用Dev版~~
 
 ## 功能
 
